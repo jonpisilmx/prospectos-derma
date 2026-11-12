@@ -1,1281 +1,390 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prospectos Derma Puerto Escondido | Agencia Reinventa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <!-- Firebase App & Firestore SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Tipografías geométricas modernas: Plus Jakarta Sans & Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Iconos Phosphor (limpios y geométricos) -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
-            body: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            cream: {
-              bg: '#EAE4D7',
-              light: '#F6F3EC',
-              sand: '#E5DEC9',
-            },
-            ink: '#141414',
-            lime: {
-              pastel: '#E8F588',
-              hover: '#dfef68',
-            },
-            terracotta: {
-              DEFAULT: '#E85D24',
-              light: '#FDECE4',
-            }
-          },
-          boxShadow: {
-            'neo': '3px 3px 0px #141414',
-            'neo-sm': '2px 2px 0px #141414',
-            'neo-lg': '5px 5px 0px #141414',
-          }
-        }
-      }
-    }
-  </script>
-
   <style>
-    body {
-      background-color: #EAE4D7;
-      color: #141414;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
+    :root {
+      --bg-color: #EAE4D7;
+      --card-bg: #F6F3EC;
+      --card-alt: #E5DEC9;
+      --text-main: #141414;
+      --border-color: #141414;
+      --accent-green: #E8F588;
+      --accent-orange: #E85D24;
+      --white: #FFFFFF;
+      --radius: 16px;
+      --shadow: 4px 4px 0px #141414;
     }
 
-    /* Bordes y tarjetas estilo Neo-Bento de referencia */
-    .bento-card {
-      border: 1.5px solid #141414;
-      border-radius: 24px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding: 24px; min-height: 100vh; }
 
-    .bento-card-interactive:hover {
-      transform: translateY(-2px);
-      box-shadow: 4px 4px 0px #141414;
-    }
+    .container { max-width: 1200px; margin: 0 auto; }
 
-    .neo-pill {
-      border: 1.5px solid #141414;
-      border-radius: 9999px;
+    /* Header */
+    header {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
     }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.25rem; }
+    .brand-badge { background: var(--accent-green); padding: 6px 12px; border: 1.5px solid var(--border-color); border-radius: 50px; font-size: 0.85rem; }
 
-    .neo-input {
-      border: 1.5px solid #141414;
-      border-radius: 14px;
-      background-color: #FFFFFF;
-      transition: all 0.15s ease;
+    /* Layout principal */
+    .dashboard-grid { display: grid; grid-template-columns: 350px 1fr; gap: 24px; }
+    @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    /* Paneles / Tarjetas Neo-Bento */
+    .panel {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
     }
+    .panel h2 { font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
-    .neo-input:focus {
+    /* Formulario de alta rápida */
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--white);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-main);
       outline: none;
-      box-shadow: 3px 3px 0px #141414;
-      background-color: #FFFDF9;
     }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-orange); }
+    
+    .btn {
+      background: var(--text-main);
+      color: var(--white);
+      border: 1.5px solid var(--border-color);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s ease;
+    }
+    .btn:hover { background: var(--accent-orange); color: var(--text-main); }
+    .btn-export { background: var(--accent-green); color: var(--text-main); margin-top: 12px; }
 
-    /* Select estilizado */
-    select.neo-select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23141414' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 36px;
+    /* Filtros y Estadísticas */
+    .filters-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
     }
+    .search-box { flex: 1; min-width: 200px; }
 
-    /* Animaciones suaves */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Lista de Prospectos */
+    .prospects-list { display: flex; flex-direction: column; gap: 16px; max-height: 75vh; overflow-y: auto; padding-right: 4px; }
+    
+    .prospect-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.2fr auto;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 2px 2px 0px var(--border-color);
+      transition: all 0.2s;
     }
-    .animate-fade-in {
-      animation: fadeIn 0.25s ease forwards;
-    }
+    @media (max-width: 768px) { .prospect-card { grid-template-columns: 1fr; } }
+    .prospect-card:hover { transform: translateY(-2px); }
 
-    /* Scrollbar limpio */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+    .prospect-info h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .prospect-info p { font-size: 0.85rem; color: #555; }
+
+    .contact-fields { display: flex; flex-direction: column; gap: 6px; }
+    .contact-input { font-size: 0.85rem; padding: 6px 10px; }
+
+    /* Estatus Selectores */
+    .status-select { font-size: 0.85rem; font-weight: 600; padding: 8px; border-radius: 8px; cursor: pointer; }
+    
+    .actions-col { display: flex; gap: 8px; align-items: center; }
+    .icon-btn {
+      background: var(--card-alt);
+      border: 1.5px solid var(--border-color);
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    ::-webkit-scrollbar-track {
-      background: #EAE4D7;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #141414;
-      border-radius: 9999px;
-    }
+    .icon-btn:hover { background: var(--accent-green); }
+    .whatsapp-btn { background: #25D366; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; padding: 8px; border-radius: 8px; border: 1.5px solid var(--border-color); }
+
+    /* Colores por Estatus */
+    .status-nuevo { background-color: #E2E8F0; }
+    .status-datos { background-color: #FEF08A; }
+    .status-propuesta-hecha { background-color: #FED7AA; }
+    .status-propuesta-enviada { background-color: #BAE6FD; }
+    .status-espera { background-color: #DDD6FE; }
+    .status-cita { background-color: #BBF7D0; }
+    .status-no { background-color: #FECACA; }
   </style>
 </head>
-<body class="min-h-screen p-3 sm:p-6 md:p-8 selection:bg-lime-pastel selection:text-ink">
+<body>
 
-  <!-- Contenedor Editorial Principal (simulando el lienzo blanco de la referencia) -->
-  <div class="max-w-[1380px] mx-auto bg-cream-light border-[1.5px] border-ink rounded-[28px] sm:rounded-[36px] p-4 sm:p-7 md:p-9 shadow-sm">
-    
-    <!-- BARRA DE NAVEGACIÓN SUPERIOR ESTILO PÍLDORA -->
-    <header class="neo-pill bg-cream-sand px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-3 mb-8">
-      <!-- Logo Agencia Reinventa -->
-      <div class="flex items-center gap-2.5 pl-1">
-        <div class="w-9 h-9 rounded-full bg-ink text-lime-pastel flex items-center justify-center shrink-0">
-          <!-- Icono geométrico inspirado en la referencia -->
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="6" width="5" height="12" rx="2.5" transform="rotate(-25 3 6)" fill="currentColor"/>
-            <rect x="10" y="5" width="5" height="14" rx="2.5" transform="rotate(-25 10 5)" fill="#E85D24"/>
-            <rect x="17" y="7" width="4" height="10" rx="2" transform="rotate(-25 17 7)" fill="#FFFFFF"/>
-          </svg>
-        </div>
-        <div class="leading-tight">
-          <span class="font-extrabold text-base sm:text-lg tracking-tight block">Agencia Reinventa</span>
-          <span class="text-[11px] font-medium text-ink/70 hidden sm:block">CRM Comercial • Puerto Escondido</span>
-        </div>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <i data-feather="crosshair"></i>
+        <span>Prospectos Derma Puerto Escondido</span>
       </div>
-
-      <!-- Línea decorativa editorial (desktop) -->
-      <div class="hidden xl:block h-[1px] bg-ink/30 flex-1 max-w-[80px]"></div>
-
-      <!-- Filtros Rápidos Centrales -->
-      <nav class="flex items-center gap-1.5 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center pt-2 lg:pt-0 border-t lg:border-t-0 border-ink/15">
-        <button onclick="setQuickFilter('all')" id="nav-all" class="nav-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-ink text-white">
-          Todos
-        </button>
-        <button onclick="setQuickFilter('followup')" id="nav-followup" class="nav-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all hover:bg-ink/10 text-ink">
-          En seguimiento
-        </button>
-        <button onclick="setQuickFilter('closed')" id="nav-closed" class="nav-filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all hover:bg-ink/10 text-ink">
-          Citas cerradas
-        </button>
-      </nav>
-
-      <!-- Línea decorativa editorial (desktop) -->
-      <div class="hidden xl:block h-[1px] bg-ink/30 flex-1 max-w-[80px] order-3"></div>
-
-      <!-- Acciones Derecha: Sincronización Google + CTA Lima Pastel -->
-      <div class="flex items-center gap-2 order-2 lg:order-4">
-        <button onclick="openGoogleSyncModal()" title="Exportar / Conectar Google Sheets" class="px-3 py-2 rounded-full text-xs sm:text-sm font-semibold text-ink hover:bg-ink/10 transition-colors flex items-center gap-1.5">
-          <i class="ph-bold ph-google-logo text-base text-terracotta"></i>
-          <span class="hidden sm:inline">Sheets / CSV</span>
-        </button>
-        
-        <button onclick="openCreateModal()" class="neo-pill bg-lime-pastel hover:bg-lime-hover active:translate-y-0.5 text-ink font-bold text-xs sm:text-sm px-4 sm:px-5 py-2.5 shadow-neo-sm transition-all flex items-center gap-1.5 cursor-pointer">
-          <i class="ph-bold ph-plus"></i>
-          <span>Nuevo Prospecto</span>
-        </button>
-      </div>
+      <div class="brand-badge">Agencia Reinventa</div>
     </header>
 
-    <!-- SECCIÓN HERO + BENTO DE MÉTRICAS (Inspirado directamente en el layout superior de la imagen) -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8 items-stretch">
-      
-      <!-- Bloque Izquierdo: Tarjetas Bento de KPIs (5 columnas en desktop) -->
-      <div class="lg:col-span-5 grid grid-cols-2 gap-4">
-        
-        <!-- Tarjeta 1: Total Prospectos (Estilo tarjeta superior izquierda con círculo lima) -->
-        <div class="bento-card bg-white p-4 sm:p-5 flex flex-col justify-between relative overflow-hidden">
-          <div class="flex items-start justify-between">
-            <div>
-              <span id="kpi-total" class="text-3xl sm:text-4xl font-extrabold tracking-tight block">0</span>
-              <span class="text-xs sm:text-sm font-medium text-ink/70 mt-1 block">Prospectos Derma</span>
-            </div>
-            <div class="w-9 h-9 rounded-full bg-lime-pastel border-[1.5px] border-ink flex items-center justify-center shrink-0">
-              <i class="ph-bold ph-arrow-up-right text-base"></i>
-            </div>
+    <div class="dashboard-grid">
+      <!-- Panel Izquierdo: Dar de alta nuevo prospecto -->
+      <div class="panel">
+        <h2><i data-feather="user-plus"></i> Nuevo Prospecto</h2>
+        <form id="addProspectForm">
+          <div class="form-group">
+            <label for="name">Nombre / Clínica / Doctor(a)</label>
+            <input type="text" id="name" placeholder="Ej. Dra. Sofía Valenzuela" required>
           </div>
-          
-          <!-- Gráfico visual minimalista de barras apiladas estilo referencia -->
-          <div class="mt-4 pt-3 border-t border-ink/15 flex items-center justify-between">
-            <div class="flex -space-x-1.5">
-              <span class="w-5 h-5 rounded-sm bg-ink rotate-12 inline-block"></span>
-              <span class="w-5 h-5 rounded-sm bg-ink/70 rotate-12 inline-block"></span>
-              <span class="w-5 h-5 rounded-sm bg-ink/40 rotate-12 inline-block"></span>
-              <span class="w-5 h-5 rounded-sm bg-terracotta rotate-12 inline-block"></span>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-ink/60">Puerto Escondido</span>
+          <div class="form-group">
+            <label for="phone">Teléfono Convencional</label>
+            <input type="text" id="phone" placeholder="954 123 4567">
           </div>
-        </div>
-
-        <!-- Tarjeta 2: Rombos Terracota + Citas Agendadas (Estilo tarjeta con rombos naranjas de la referencia) -->
-        <div class="flex flex-col gap-3">
-          <!-- Píldora de rombos terracota -->
-          <div class="neo-pill bg-white px-3.5 py-2 flex items-center justify-between">
-            <div class="flex items-center gap-1 text-terracotta" id="diamond-rating">
-              <i class="ph-fill ph-diamond text-sm"></i>
-              <i class="ph-fill ph-diamond text-sm"></i>
-              <i class="ph-fill ph-diamond text-sm"></i>
-              <i class="ph-fill ph-diamond text-sm"></i>
-              <i class="ph-fill ph-diamond text-sm"></i>
-            </div>
-            <span id="kpi-conversion-badge" class="text-xs font-bold">0% cierre</span>
+          <div class="form-group">
+            <label for="whatsapp">WhatsApp</label>
+            <input type="text" id="whatsapp" placeholder="+52 954 123 4567">
           </div>
-
-          <!-- Tarjeta Arena: Citas Agendadas -->
-          <div class="bento-card bg-cream-sand p-4 sm:p-5 flex-1 flex flex-col justify-between">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white border border-ink">Meta</span>
-              <i class="ph-fill ph-calendar-check text-xl text-terracotta"></i>
-            </div>
-            <div class="mt-2">
-              <div class="flex items-baseline gap-2">
-                <span id="kpi-citas" class="text-3xl sm:text-4xl font-extrabold">0</span>
-                <span class="text-xs font-semibold text-ink/70">citas</span>
-              </div>
-              <p class="text-xs text-ink/75 mt-0.5">Ya se hizo cita comercial</p>
-            </div>
+          <div class="form-group">
+            <label for="notes">Notas Iniciales</label>
+            <textarea id="notes" rows="3" placeholder="Interés en pautas de Meta y redes sociales..."></textarea>
           </div>
-        </div>
-
-        <!-- Tarjeta 3 (Ancho completo abajo): Propuestas y Respuestas -->
-        <div class="col-span-2 bento-card bg-white p-4 sm:p-5 grid grid-cols-2 divide-x divide-ink">
-          <div class="pr-4 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <i class="ph-fill ph-diamond text-terracotta text-sm"></i>
-              <span class="text-[11px] font-semibold text-ink/60">Auditorías</span>
-            </div>
-            <div>
-              <span id="kpi-propuestas" class="text-2xl sm:text-3xl font-extrabold block">0</span>
-              <span class="text-xs text-ink/70">Propuestas hechas / enviadas</span>
-            </div>
-          </div>
-
-          <div class="pl-4 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <i class="ph-fill ph-diamond text-terracotta text-sm"></i>
-              <span class="neo-pill px-2 py-0.5 text-[10px] font-bold bg-lime-pastel">Activos</span>
-            </div>
-            <div>
-              <span id="kpi-contestacion" class="text-2xl sm:text-3xl font-extrabold block">0</span>
-              <span class="text-xs text-ink/70">Con respuesta / En espera</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bloque Derecho: Titular Editorial + Buscador y Filtros Rápidos (7 columnas en desktop) -->
-      <div class="lg:col-span-7 flex flex-col justify-between pl-0 lg:pl-4 py-1">
-        <div>
-          <div class="inline-flex items-center gap-2 neo-pill bg-white px-3.5 py-1 text-xs font-bold mb-4">
-            <span id="db-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-            <span id="db-status-text">Conectando con Google Cloud...</span>
-          </div>
-
-          <h1 class="text-3xl sm:text-5xl xl:text-[52px] font-extrabold tracking-tight leading-[1.08] text-ink">
-            Prospectos Derma
-            <span class="inline-flex items-center align-middle ml-1">
-              <!-- Círculos superpuestos icónicos de la imagen de referencia -->
-              <span class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-terracotta border-[1.5px] border-ink inline-block"></span>
-              <span class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-lime-pastel border-[1.5px] border-ink -ml-3 inline-flex items-center justify-center">
-                <i class="ph-bold ph-sparkle text-sm sm:text-base"></i>
-              </span>
-            </span>
-            <br/>Puerto Escondido
-          </h1>
-
-          <p class="text-sm sm:text-base text-ink/75 font-body max-w-2xl mt-3 leading-relaxed">
-            Control centralizado de prospección comercial para <strong>Agencia Reinventa</strong>. Registra clínicas dermatológicas y especialistas, alimenta sus datos de contacto y actualiza el avance de cada negociación en tiempo real.
-          </p>
-        </div>
-
-        <!-- Barra de Alta Rápida + Búsqueda y Filtro por Estatus -->
-        <div class="mt-6 space-y-3">
-          <!-- Alta rápida en 1 clic (solo nombre) -->
-          <form id="quick-add-form" onsubmit="handleQuickAdd(event)" class="flex flex-col sm:flex-row gap-2.5">
-            <div class="relative flex-1">
-              <i class="ph-bold ph-first-aid-kit absolute left-4 top-1/2 -translate-y-1/2 text-ink/50 text-lg"></i>
-              <input 
-                type="text" 
-                id="quick-name-input" 
-                required
-                placeholder="Alta rápida: Ej. Clínica Dermatológica Zicatela..." 
-                class="neo-input w-full pl-11 pr-4 py-3 text-sm font-medium placeholder:text-ink/45"
-              />
-            </div>
-            <button type="submit" class="neo-pill bg-ink text-white hover:bg-ink/90 active:translate-y-0.5 px-6 py-3 text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0">
-              <span>Crear Registro</span>
-              <i class="ph-bold ph-arrow-right"></i>
-            </button>
-          </form>
-
-          <!-- Filtros de búsqueda y selector de los 7 estatus -->
-          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-1">
-            <div class="sm:col-span-6 relative">
-              <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/50"></i>
-              <input 
-                type="text" 
-                id="search-input" 
-                oninput="renderProspects()"
-                placeholder="Buscar por nombre, teléfono o notas..." 
-                class="neo-input w-full pl-10 pr-3 py-2 text-xs sm:text-sm"
-              />
-            </div>
-            <div class="sm:col-span-6">
-              <select id="status-filter" onchange="renderProspects()" class="neo-input neo-select w-full px-3.5 py-2 text-xs sm:text-sm font-semibold cursor-pointer">
-                <option value="ALL">Filtrar por estatus: Todos (7 estados)</option>
-                <option value="Nuevo registro">1. Nuevo registro</option>
-                <option value="Ya se tienen todos los datos de contacto">2. Ya se tienen todos los datos de contacto</option>
-                <option value="Ya se hizo auditoría o propuesta">3. Ya se hizo auditoría o propuesta</option>
-                <option value="Ya se envió auditoría o propuesta">4. Ya se envió auditoría o propuesta</option>
-                <option value="Ya tuvimos primer contestación, en espera">5. Ya tuvimos primer contestación, en espera</option>
-                <option value="Ya se hizo cita">6. Ya se hizo cita</option>
-                <option value="No desea los servicios">7. No desea los servicios</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEPARADOR EDITORIAL -->
-    <div class="flex items-center justify-between mb-5 px-1">
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full bg-terracotta border border-ink"></span>
-        <h2 class="font-extrabold text-lg sm:text-xl tracking-tight">Cartera de Prospectos</h2>
-        <span id="filtered-count-badge" class="neo-pill bg-cream-sand px-2.5 py-0.5 text-xs font-bold ml-1">0</span>
-      </div>
-      <div class="text-xs text-ink/60 font-medium hidden sm:block">
-        Haz clic en cualquier tarjeta para editar teléfono, WhatsApp o notas
-      </div>
-    </div>
-
-    <!-- GRID DE TARJETAS BENTO DE PROSPECTOS -->
-    <main id="prospects-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <!-- Las tarjetas se renderizan dinámicamente aquí -->
-    </main>
-
-    <!-- Estado Vacío -->
-    <div id="empty-state" class="hidden bento-card bg-white p-10 text-center my-4">
-      <div class="w-14 h-14 rounded-full bg-cream-sand border-[1.5px] border-ink mx-auto flex items-center justify-center mb-3">
-        <i class="ph-bold ph-folder-open text-2xl"></i>
-      </div>
-      <h3 class="font-extrabold text-lg">No hay prospectos con este filtro</h3>
-      <p class="text-sm text-ink/70 max-w-md mx-auto mt-1">Prueba cambiando el filtro de búsqueda o da de alta una nueva clínica dermatológica en Puerto Escondido.</p>
-      <button onclick="resetFilters()" class="neo-pill bg-lime-pastel px-5 py-2 text-xs font-bold mt-4 shadow-neo-sm">
-        Ver todos los prospectos
-      </button>
-    </div>
-
-    <!-- FOOTER DISCRETO -->
-    <footer class="mt-10 pt-5 border-t border-ink/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink/65">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-ink">Agencia Reinventa</span>
-        <span>•</span>
-        <span>Prospección Comercial Derma Puerto Escondido</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <button onclick="seedSampleData(true)" class="hover:text-ink underline cursor-pointer">Restaurar ejemplos iniciales</button>
-        <button onclick="exportToCSV()" class="hover:text-ink font-semibold flex items-center gap-1 cursor-pointer">
-          <i class="ph-bold ph-download-simple"></i> Descargar CSV
-        </button>
-      </div>
-    </footer>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- MODAL: CREAR / EDITAR PROSPECTO DETALLADO                             -->
-  <!-- ===================================================================== -->
-  <div id="prospect-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4 overflow-y-auto">
-    <div class="bento-card bg-cream-light w-full max-w-lg p-6 sm:p-7 shadow-neo-lg animate-fade-in relative my-auto">
-      
-      <!-- Encabezado Modal -->
-      <div class="flex items-center justify-between pb-4 border-b border-ink/15">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-full bg-lime-pastel border-[1.5px] border-ink flex items-center justify-center">
-            <i id="modal-icon" class="ph-bold ph-user-plus text-lg"></i>
-          </div>
-          <div>
-            <h3 id="modal-title" class="font-extrabold text-lg sm:text-xl leading-tight">Nuevo Prospecto</h3>
-            <p class="text-xs text-ink/65">Completa los datos disponibles ahora o actualízalos después</p>
-          </div>
-        </div>
-        <button onclick="closeModal('prospect-modal')" class="w-9 h-9 rounded-full bg-white border-[1.5px] border-ink flex items-center justify-center hover:bg-cream-sand cursor-pointer">
-          <i class="ph-bold ph-x"></i>
+          <button type="submit" class="btn">
+            <i data-feather="plus-circle"></i> Agregar a Firestore
+          </button>
+        </form>
+        <button onclick="exportToCSV()" class="btn btn-export">
+          <i data-feather="download"></i> Exportar a CSV / Sheets
         </button>
       </div>
 
-      <!-- Formulario -->
-      <form id="prospect-form" onsubmit="handleSaveProspect(event)" class="mt-5 space-y-4">
-        <input type="hidden" id="field-id" />
-
-        <!-- Nombre de Clínica / Especialista -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider mb-1.5">Nombre de Clínica o Especialista *</label>
-          <input 
-            type="text" 
-            id="field-name" 
-            required 
-            placeholder="Ej. Dra. Sofía Mendoza - Dermatología" 
-            class="neo-input w-full px-3.5 py-2.5 text-sm font-semibold"
-          />
-        </div>
-
-        <!-- Estatus Comercial (7 opciones exactas) -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider mb-1.5">Estatus de Prospección</label>
-          <select id="field-status" class="neo-input neo-select w-full px-3.5 py-2.5 text-sm font-semibold cursor-pointer">
+      <!-- Panel Derecho: Listado y Gestión -->
+      <div class="panel">
+        <div class="filters-bar">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre o nota..." oninput="filterProspects()">
+          </div>
+          <select id="statusFilter" onchange="filterProspects()" style="max-width: 220px;">
+            <option value="todos">Todos los estatus</option>
             <option value="Nuevo registro">Nuevo registro</option>
-            <option value="Ya se tienen todos los datos de contacto">Ya se tienen todos los datos de contacto</option>
-            <option value="Ya se hizo auditoría o propuesta">Ya se hizo auditoría o propuesta</option>
-            <option value="Ya se envió auditoría o propuesta">Ya se envió auditoría o propuesta</option>
-            <option value="Ya tuvimos primer contestación, en espera">Ya tuvimos primer contestación, en espera</option>
-            <option value="Ya se hizo cita">Ya se hizo cita</option>
-            <option value="No desea los servicios">No desea los servicios</option>
+            <option value="Ya se tienen todos los datos de contacto">Ya se tienen datos</option>
+            <option value="Ya se hizo auditoría o propuesta">Auditoría hecha</option>
+            <option value="Ya se envió auditoría o propuesta">Auditoría enviada</option>
+            <option value="Ya tuvimos primer contestación, en espera">En espera de respuesta</option>
+            <option value="Ya se hizo cita">Cita agendada</option>
+            <option value="No desea los servicios">No desea servicios</option>
           </select>
         </div>
 
-        <!-- Teléfonos en 2 columnas -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5">
-              <i class="ph-bold ph-phone text-ink/70"></i> Teléfono Convencional
-            </label>
-            <input 
-              type="tel" 
-              id="field-phone" 
-              placeholder="Ej. 954 582 0000" 
-              class="neo-input w-full px-3.5 py-2.5 text-sm"
-            />
-          </div>
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5">
-              <i class="ph-bold ph-whatsapp-logo text-emerald-700"></i> Número de WhatsApp
-            </label>
-            <input 
-              type="tel" 
-              id="field-whatsapp" 
-              placeholder="Ej. 954 123 4567" 
-              class="neo-input w-full px-3.5 py-2.5 text-sm"
-            />
-          </div>
-        </div>
-
-        <!-- Notas Extra -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider mb-1.5">Notas Extra / Bitácora</label>
-          <textarea 
-            id="field-notes" 
-            rows="3" 
-            placeholder="Ubicación (Rinconada, Zicatela, Centro), persona de contacto en recepción, servicios actuales, observaciones..." 
-            class="neo-input w-full px-3.5 py-2.5 text-sm resize-none"
-          ></textarea>
-        </div>
-
-        <!-- Botones del Formulario -->
-        <div class="pt-3 flex items-center justify-between gap-3 border-t border-ink/15">
-          <button type="button" id="btn-delete-modal" onclick="confirmDeleteCurrent()" class="hidden px-4 py-2.5 rounded-full text-xs font-bold text-red-700 hover:bg-red-100 transition-colors cursor-pointer">
-            <i class="ph-bold ph-trash"></i> Eliminar
-          </button>
-          <div class="flex items-center gap-2.5 ml-auto">
-            <button type="button" onclick="closeModal('prospect-modal')" class="neo-pill bg-white px-4 py-2.5 text-xs sm:text-sm font-bold hover:bg-cream-sand cursor-pointer">
-              Cancelar
-            </button>
-            <button type="submit" class="neo-pill bg-lime-pastel hover:bg-lime-hover px-6 py-2.5 text-xs sm:text-sm font-extrabold shadow-neo-sm cursor-pointer flex items-center gap-1.5">
-              <i class="ph-bold ph-check"></i>
-              <span>Guardar Cambios</span>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- MODAL: CONFIRMACIÓN DE ELIMINACIÓN (Sin alert/confirm nativo)         -->
-  <!-- ===================================================================== -->
-  <div id="delete-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
-    <div class="bento-card bg-white w-full max-w-sm p-6 shadow-neo-lg animate-fade-in text-center">
-      <div class="w-12 h-12 rounded-full bg-terracotta-light border-[1.5px] border-ink text-terracotta mx-auto flex items-center justify-center mb-3">
-        <i class="ph-bold ph-warning text-2xl"></i>
-      </div>
-      <h3 class="font-extrabold text-lg">¿Eliminar prospecto?</h3>
-      <p id="delete-prospect-name" class="text-sm text-ink/75 mt-1">Esta acción eliminará el registro de la base de datos.</p>
-      <div class="flex items-center justify-center gap-3 mt-5">
-        <button onclick="closeModal('delete-modal')" class="neo-pill bg-cream-sand px-5 py-2 text-xs font-bold cursor-pointer">
-          Cancelar
-        </button>
-        <button id="confirm-delete-btn" class="neo-pill bg-terracotta text-white px-5 py-2 text-xs font-bold shadow-neo-sm cursor-pointer">
-          Sí, eliminar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- MODAL: EXPORTACIÓN / CONEXIÓN GOOGLE SHEETS                           -->
-  <!-- ===================================================================== -->
-  <div id="google-sync-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
-    <div class="bento-card bg-cream-light w-full max-w-lg p-6 sm:p-7 shadow-neo-lg animate-fade-in">
-      <div class="flex items-center justify-between pb-3 border-b border-ink/15">
-        <div class="flex items-center gap-2">
-          <span class="w-8 h-8 rounded-full bg-white border-[1.5px] border-ink flex items-center justify-center">
-            <i class="ph-bold ph-table text-terracotta"></i>
-          </span>
-          <h3 class="font-extrabold text-lg">Base de Datos Google & Exportación</h3>
-        </div>
-        <button onclick="closeModal('google-sync-modal')" class="w-8 h-8 rounded-full bg-white border-[1.5px] border-ink flex items-center justify-center cursor-pointer">
-          <i class="ph-bold ph-x"></i>
-        </button>
-      </div>
-
-      <div class="mt-4 space-y-4 text-sm text-ink/80">
-        <div class="p-4 rounded-2xl bg-white border-[1.5px] border-ink">
-          <div class="flex items-center gap-2 font-bold text-ink mb-1">
-            <i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i>
-            <span>Google Firebase Firestore Activo</span>
-          </div>
-          <p class="text-xs leading-relaxed">
-            Todos los prospectos, teléfonos y cambios de estatus se guardan automáticamente en la nube de Google en tiempo real para todo el equipo de <strong>Agencia Reinventa</strong>.
-          </p>
-        </div>
-
-        <div class="p-4 rounded-2xl bg-cream-sand border-[1.5px] border-ink">
-          <h4 class="font-bold text-ink mb-1">Exportar a Google Sheets / Excel</h4>
-          <p class="text-xs mb-3">Descarga la cartera actualizada en formato CSV compatible con Google Drive y Google Sheets con un clic:</p>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="exportToCSV()" class="neo-pill bg-lime-pastel px-4 py-2 text-xs font-bold shadow-neo-sm flex items-center gap-1.5 cursor-pointer">
-              <i class="ph-bold ph-file-csv text-base"></i> Descargar Archivo CSV
-            </button>
-            <button onclick="copyTableForSheets()" class="neo-pill bg-white px-4 py-2 text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:bg-cream-light">
-              <i class="ph-bold ph-copy text-base"></i> Copiar para pegar en Sheets
-            </button>
-          </div>
+        <div id="prospectsList" class="prospects-list">
+          <!-- Se cargan dinámicamente desde Firestore -->
+          <p style="text-align: center; color: #666; padding: 20px;">Conectando con la base de datos de Google...</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TOAST DE NOTIFICACIÓN -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 neo-pill bg-ink text-white px-4 py-3 text-xs sm:text-sm font-semibold shadow-neo">
-    <i id="toast-icon" class="ph-fill ph-check-circle text-lime-pastel text-lg"></i>
-    <span id="toast-message">Guardado correctamente</span>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- LÓGICA DE APLICACIÓN Y CONEXIÓN GOOGLE FIREBASE FIRESTORE             -->
-  <!-- ===================================================================== -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      doc, 
-      addDoc, 
-      updateDoc, 
-      deleteDoc, 
-      onSnapshot, 
-      serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Configuración global de los 7 estatus exactos solicitados
-    const STATUS_CONFIG = {
-      "Nuevo registro": {
-        badgeBg: "bg-white",
-        dotColor: "bg-ink",
-        icon: "ph-sparkle",
-        shortLabel: "Nuevo registro",
-        category: "followup"
-      },
-      "Ya se tienen todos los datos de contacto": {
-        badgeBg: "bg-cream-sand",
-        dotColor: "bg-ink",
-        icon: "ph-address-book",
-        shortLabel: "Datos completos",
-        category: "followup"
-      },
-      "Ya se hizo auditoría o propuesta": {
-        badgeBg: "bg-amber-100",
-        dotColor: "bg-terracotta",
-        icon: "ph-file-text",
-        shortLabel: "Auditoría hecha",
-        category: "followup"
-      },
-      "Ya se envió auditoría o propuesta": {
-        badgeBg: "bg-terracotta-light",
-        dotColor: "bg-terracotta",
-        icon: "ph-paper-plane-tilt",
-        shortLabel: "Propuesta enviada",
-        category: "followup"
-      },
-      "Ya tuvimos primer contestación, en espera": {
-        badgeBg: "bg-sky-100",
-        dotColor: "bg-sky-600",
-        icon: "ph-chats-circle",
-        shortLabel: "En espera / Respuesta",
-        category: "followup"
-      },
-      "Ya se hizo cita": {
-        badgeBg: "bg-lime-pastel",
-        dotColor: "bg-emerald-700",
-        icon: "ph-calendar-check",
-        shortLabel: "Cita agendada",
-        category: "closed"
-      },
-      "No desea los servicios": {
-        badgeBg: "bg-neutral-200",
-        dotColor: "bg-neutral-500",
-        icon: "ph-x-circle",
-        shortLabel: "No desea servicios",
-        category: "rejected"
-      }
+  <script>
+    // ==========================================
+    // CONFIGURACIÓN DE FIREBASE (Tus llaves de proyecto)
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBvLIJ1FN8a7_SXIrr1KcoPk8PpFWW-yvQ",
+      authDomain: "reventadelta-prospectos.firebaseapp.com",
+      projectId: "reventadelta-prospectos",
+      storageBucket: "reventadelta-prospectos.appspot.com",
+      messagingSenderId: "665683758285",
+      appId: "1:665683758285:web:937ab25e61560eb6f26d84"
     };
 
-    // Estado local sincronizado con Firestore
-    let prospects = [];
-    let currentQuickFilter = 'all';
-    let prospectToDeleteId = null;
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-    let useLocalFallback = false;
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'agencia-reinventa-derma-pe';
+    let allProspects = [];
 
-    // Datos iniciales de ejemplo para Puerto Escondido si la base está vacía
-    const SAMPLE_PROSPECTS = [
-      {
-        name: "Centro Dermatológico Zicatela",
-        phone: "954 582 1420",
-        whatsapp: "954 118 9034",
-        status: "Ya se envió auditoría o propuesta",
-        notes: "Ubicados cerca de Calle del Morro. Se envió auditoría de Instagram y Google Maps a la recepción; confirmar lectura el jueves."
-      },
-      {
-        name: "Dra. Sofía Mendoza - Dermatología Clínica",
-        phone: "954 582 3391",
-        whatsapp: "954 109 4421",
-        status: "Ya se hizo cita",
-        notes: "Consultorio en Rinconada. Cita confirmada por Zoom para presentar paquete de posicionamiento y pauta local."
-      },
-      {
-        name: "Clínica Derma Costa & Láser",
-        phone: "",
-        whatsapp: "954 145 7890",
-        status: "Ya tuvimos primer contestación, en espera",
-        notes: "Respondieron por WhatsApp pidiendo casos de éxito en el sector salud. En espera de confirmar horario con el director médico."
-      },
-      {
-        name: "DermaEscondido Especialidades",
-        phone: "954 582 0912",
-        whatsapp: "",
-        status: "Nuevo registro",
-        notes: "Clínica recién aperturada en zona Centro / Av. Oaxaca. Pendiente conseguir WhatsApp directo de administración."
-      }
+    const statusOptions = [
+      "Nuevo registro",
+      "Ya se tienen todos los datos de contacto",
+      "Ya se hizo auditoría o propuesta",
+      "Ya se envió auditoría o propuesta",
+      "Ya tuvimos primer contestación, en espera",
+      "Ya se hizo cita",
+      "No desea los servicios"
     ];
 
-    // Inicialización de Firebase con Auth antes de consultas (Regla 3)
-    async function initFirebase() {
-      try {
-        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
-          throw new Error("Configuración de Firebase no detectada, activando modo local de respaldo.");
-        }
-
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-
-        // Autenticación obligatoria antes de cualquier operación
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          const cred = await signInWithCustomToken(auth, __initial_auth_token);
-          currentUser = cred.user;
-        } else {
-          const cred = await signInAnonymously(auth);
-          currentUser = cred.user;
-        }
-
-        updateConnectionStatus(true, "Sincronizado con Google Cloud");
-        listenToProspects();
-
-      } catch (err) {
-        console.warn("Usando almacenamiento en memoria/sesión:", err.message);
-        useLocalFallback = true;
-        updateConnectionStatus(true, "Modo Sesión Activo");
-        prospects = SAMPLE_PROSPECTS.map((item, idx) => ({
-          id: 'local-' + (idx + 1),
-          ...item,
-          createdAt: Date.now() - idx * 3600000
-        }));
-        renderAll();
-      }
-    }
-
-    function updateConnectionStatus(connected, text) {
-      const dot = document.getElementById('db-status-dot');
-      const label = document.getElementById('db-status-text');
-      if (connected) {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
-        label.textContent = text;
-      } else {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-terracotta";
-        label.textContent = text;
-      }
-    }
-
-    // Escucha en tiempo real de la colección pública compartida para Agencia Reinventa (Regla 1 y 2)
-    function listenToProspects() {
-      if (!currentUser || !db) return;
-
-      const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe');
-      
-      let initialSeedChecked = false;
-
-      onSnapshot(
-        colRef,
-        async (snapshot) => {
-          const items = [];
-          snapshot.forEach((docSnap) => {
-            items.push({ id: docSnap.id, ...docSnap.data() });
-          });
-
-          // Si la base de datos está completamente vacía la primera vez, cargar ejemplos de Puerto Escondido
-          if (items.length === 0 && !initialSeedChecked) {
-            initialSeedChecked = true;
-            await seedSampleData(false);
-            return;
-          }
-          initialSeedChecked = true;
-
-          // Ordenar en memoria (Regla 2: sin orderBy en Firestore)
-          items.sort((a, b) => {
-            const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt || 0);
-            const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt || 0);
-            return timeB - timeA;
-          });
-
-          prospects = items;
-          renderAll();
-        },
-        (error) => {
-          console.error("Error leyendo Firestore:", error);
-          updateConnectionStatus(false, "Error de sincronización");
-          showToast("No se pudo conectar con la base de datos", true);
-        }
-      );
-    }
-
-    // Cargar ejemplos iniciales
-    window.seedSampleData = async function(manualTrigger = false) {
-      if (useLocalFallback) {
-        prospects = SAMPLE_PROSPECTS.map((item, idx) => ({
-          id: 'local-' + Date.now() + '-' + idx,
-          ...item,
-          createdAt: Date.now() - idx * 1000
-        }));
-        renderAll();
-        if (manualTrigger) showToast("Ejemplos restaurados");
-        return;
-      }
-
-      if (!currentUser || !db) return;
-      const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe');
-      
-      try {
-        for (const sample of SAMPLE_PROSPECTS) {
-          await addDoc(colRef, {
-            ...sample,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-        }
-        if (manualTrigger) showToast("Prospectos de ejemplo agregados");
-      } catch (e) {
-        console.error("Error al sembrar datos:", e);
-      }
-    };
-
-    // Alta rápida desde la barra principal (solo pide el nombre y crea con estatus 'Nuevo registro')
-    window.handleQuickAdd = async function(e) {
-      e.preventDefault();
-      const input = document.getElementById('quick-name-input');
-      const name = input.value.trim();
-      if (!name) return;
-
-      input.value = '';
-      await createProspectRecord({
-        name,
-        phone: '',
-        whatsapp: '',
-        status: 'Nuevo registro',
-        notes: ''
+    // Cargar datos en tiempo real desde Firestore
+    db.collection("prospectos_derma_pe").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+      allProspects = [];
+      snapshot.forEach((doc) => {
+        allProspects.push({ id: doc.id, ...doc.data() });
       });
-    };
-
-    async function createProspectRecord(data) {
-      if (useLocalFallback) {
-        prospects.unshift({
-          id: 'local-' + Date.now(),
-          ...data,
-          createdAt: Date.now()
-        });
-        renderAll();
-        showToast("Prospecto registrado");
-        return;
-      }
-
-      if (!currentUser || !db) return;
-      try {
-        const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe');
-        await addDoc(colRef, {
-          ...data,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-        showToast("Prospecto guardado en Google Cloud");
-      } catch (err) {
-        console.error("Error al crear:", err);
-        showToast("Error al guardar el registro", true);
-      }
-    }
-
-    // Actualización rápida de estatus directamente desde la tarjeta
-    window.updateProspectStatus = async function(id, newStatus) {
-      if (useLocalFallback) {
-        const target = prospects.find(p => p.id === id);
-        if (target) target.status = newStatus;
-        renderAll();
-        showToast("Estatus actualizado");
-        return;
-      }
-
-      if (!currentUser || !db) return;
-      try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe', id);
-        await updateDoc(docRef, {
-          status: newStatus,
-          updatedAt: serverTimestamp()
-        });
-        showToast("Estatus actualizado");
-      } catch (err) {
-        console.error("Error actualizando estatus:", err);
-        showToast("No se pudo actualizar el estatus", true);
-      }
-    };
-
-    // Guardar desde el Modal (Crear o Editar)
-    window.handleSaveProspect = async function(e) {
-      e.preventDefault();
-      const id = document.getElementById('field-id').value;
-      const payload = {
-        name: document.getElementById('field-name').value.trim(),
-        status: document.getElementById('field-status').value,
-        phone: document.getElementById('field-phone').value.trim(),
-        whatsapp: document.getElementById('field-whatsapp').value.trim(),
-        notes: document.getElementById('field-notes').value.trim(),
-      };
-
-      if (!payload.name) return;
-      closeModal('prospect-modal');
-
-      if (!id) {
-        await createProspectRecord(payload);
-      } else {
-        if (useLocalFallback) {
-          const idx = prospects.findIndex(p => p.id === id);
-          if (idx !== -1) prospects[idx] = { ...prospects[idx], ...payload };
-          renderAll();
-          showToast("Datos actualizados");
-          return;
-        }
-
-        if (!currentUser || !db) return;
-        try {
-          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe', id);
-          await updateDoc(docRef, {
-            ...payload,
-            updatedAt: serverTimestamp()
-          });
-          showToast("Registro actualizado");
-        } catch (err) {
-          console.error("Error al actualizar:", err);
-          showToast("Error al actualizar", true);
-        }
-      }
-    };
-
-    // Eliminar registro
-    window.requestDelete = function(id, name, event) {
-      if (event) event.stopPropagation();
-      prospectToDeleteId = id;
-      document.getElementById('delete-prospect-name').textContent = `Se eliminará "${name}" permanentemente.`;
-      document.getElementById('confirm-delete-btn').onclick = executeDelete;
-      openModal('delete-modal');
-    };
-
-    window.confirmDeleteCurrent = function() {
-      const id = document.getElementById('field-id').value;
-      const name = document.getElementById('field-name').value;
-      closeModal('prospect-modal');
-      requestDelete(id, name);
-    };
-
-    async function executeDelete() {
-      if (!prospectToDeleteId) return;
-      const id = prospectToDeleteId;
-      prospectToDeleteId = null;
-      closeModal('delete-modal');
-
-      if (useLocalFallback) {
-        prospects = prospects.filter(p => p.id !== id);
-        renderAll();
-        showToast("Prospecto eliminado");
-        return;
-      }
-
-      if (!currentUser || !db) return;
-      try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'prospectos_derma_pe', id);
-        await deleteDoc(docRef);
-        showToast("Prospecto eliminado");
-      } catch (err) {
-        console.error("Error eliminando:", err);
-        showToast("No se pudo eliminar", true);
-      }
-    }
-
-    // Renderizado de KPIs y Tarjetas
-    function renderAll() {
-      updateKPIs();
-      renderProspects();
-    }
-
-    function updateKPIs() {
-      const total = prospects.length;
-      const citas = prospects.filter(p => p.status === "Ya se hizo cita").length;
-      const propuestas = prospects.filter(p => 
-        p.status === "Ya se hizo auditoría o propuesta" || 
-        p.status === "Ya se envió auditoría o propuesta"
-      ).length;
-      const contestacion = prospects.filter(p => 
-        p.status === "Ya tuvimos primer contestación, en espera"
-      ).length;
-
-      const conversion = total > 0 ? Math.round((citas / total) * 100) : 0;
-
-      document.getElementById('kpi-total').textContent = total;
-      document.getElementById('kpi-citas').textContent = citas;
-      document.getElementById('kpi-propuestas').textContent = propuestas;
-      document.getElementById('kpi-contestacion').textContent = contestacion;
-      document.getElementById('kpi-conversion-badge').textContent = `${conversion}% cierre`;
-    }
-
-    window.setQuickFilter = function(filter) {
-      currentQuickFilter = filter;
-      
-      // Actualizar estilos de botones en barra superior
-      document.querySelectorAll('.nav-filter-btn').forEach(btn => {
-        btn.classList.remove('bg-ink', 'text-white');
-        btn.classList.add('text-ink', 'hover:bg-ink/10');
-      });
-      const activeBtn = document.getElementById(`nav-${filter}`);
-      if (activeBtn) {
-        activeBtn.classList.add('bg-ink', 'text-white');
-        activeBtn.classList.remove('text-ink', 'hover:bg-ink/10');
-      }
-
-      renderProspects();
-    };
-
-    window.resetFilters = function() {
-      document.getElementById('search-input').value = '';
-      document.getElementById('status-filter').value = 'ALL';
-      setQuickFilter('all');
-    };
-
-    window.renderProspects = function() {
-      const grid = document.getElementById('prospects-grid');
-      const emptyState = document.getElementById('empty-state');
-      const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-      const statusFilter = document.getElementById('status-filter').value;
-
-      const filtered = prospects.filter(p => {
-        // Filtro superior rápido
-        if (currentQuickFilter === 'closed' && p.status !== 'Ya se hizo cita') return false;
-        if (currentQuickFilter === 'followup') {
-          if (p.status === 'Ya se hizo cita' || p.status === 'No desea los servicios') return false;
-        }
-
-        // Filtro dropdown de 7 estatus
-        if (statusFilter !== 'ALL' && p.status !== statusFilter) return false;
-
-        // Filtro por texto
-        if (searchQuery) {
-          const hayMatch = 
-            (p.name || '').toLowerCase().includes(searchQuery) ||
-            (p.phone || '').toLowerCase().includes(searchQuery) ||
-            (p.whatsapp || '').toLowerCase().includes(searchQuery) ||
-            (p.notes || '').toLowerCase().includes(searchQuery);
-          if (!hayMatch) return false;
-        }
-
-        return true;
-      });
-
-      document.getElementById('filtered-count-badge').textContent = filtered.length;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '';
-        emptyState.classList.remove('hidden');
-        return;
-      }
-
-      emptyState.classList.add('hidden');
-      grid.innerHTML = filtered.map(p => buildProspectCardHTML(p)).join('');
-    };
-
-    function formatWhatsAppLink(rawNumber) {
-      if (!rawNumber) return null;
-      let digits = rawNumber.replace(/\D/g, '');
-      if (digits.length === 10) digits = '52' + digits;
-      return `https://wa.me/${digits}`;
-    }
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return str.replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[m]));
-    }
-
-    function buildProspectCardHTML(p) {
-      const cfg = STATUS_CONFIG[p.status] || STATUS_CONFIG["Nuevo registro"];
-      const waLink = formatWhatsAppLink(p.whatsapp);
-      const isRejected = p.status === "No desea los servicios";
-      const isCita = p.status === "Ya se hizo cita";
-
-      const statusOptionsHTML = Object.keys(STATUS_CONFIG).map(st => 
-        `<option value="${escapeHTML(st)}" ${p.status === st ? 'selected' : ''}>${escapeHTML(st)}</option>`
-      ).join('');
-
-      return `
-        <article class="bento-card bento-card-interactive ${isRejected ? 'bg-white/75 opacity-85' : 'bg-white'} p-5 flex flex-col justify-between animate-fade-in">
-          <div>
-            <!-- Fila Superior: Badge de Estatus + Botones Editar/Eliminar -->
-            <div class="flex items-start justify-between gap-2 mb-3.5">
-              <span class="neo-pill ${cfg.badgeBg} px-3 py-1 text-[11px] font-bold inline-flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full ${cfg.dotColor}"></span>
-                <span>${escapeHTML(cfg.shortLabel)}</span>
-              </span>
-
-              <div class="flex items-center gap-1.5 shrink-0">
-                <button 
-                  onclick="openEditModal('${p.id}')" 
-                  title="Editar datos y notas"
-                  class="w-8 h-8 rounded-full bg-cream-light hover:bg-lime-pastel border-[1.5px] border-ink flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <i class="ph-bold ph-pencil-simple text-sm"></i>
-                </button>
-                <button 
-                  onclick="requestDelete('${p.id}', '${escapeHTML(p.name).replace(/'/g, "\\'")}', event)" 
-                  title="Eliminar registro"
-                  class="w-8 h-8 rounded-full bg-cream-light hover:bg-terracotta-light hover:text-terracotta border-[1.5px] border-ink flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <i class="ph-bold ph-trash text-sm"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Nombre de la Clínica / Doctor -->
-            <h3 onclick="openEditModal('${p.id}')" class="font-extrabold text-lg sm:text-xl leading-snug tracking-tight cursor-pointer hover:text-terracotta transition-colors mb-3">
-              ${escapeHTML(p.name)}
-            </h3>
-
-            <!-- Bloque de Datos de Contacto (Teléfono Convencional y WhatsApp) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3.5">
-              <!-- Teléfono Convencional -->
-              <div class="rounded-2xl bg-cream-light border border-ink/20 px-3 py-2 flex items-center justify-between">
-                <div class="min-w-0">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-ink/55 block">Tel. Convencional</span>
-                  ${p.phone 
-                    ? `<a href="tel:${escapeHTML(p.phone)}" class="text-xs font-bold text-ink hover:underline truncate block">${escapeHTML(p.phone)}</a>`
-                    : `<button onclick="openEditModal('${p.id}')" class="text-xs font-medium text-ink/45 hover:text-ink italic cursor-pointer">+ Agregar tel.</button>`
-                  }
-                </div>
-                <i class="ph-bold ph-phone text-ink/50 text-base shrink-0 ml-1"></i>
-              </div>
-
-              <!-- Número de WhatsApp -->
-              <div class="rounded-2xl ${waLink ? 'bg-emerald-50/80 border-emerald-900/25' : 'bg-cream-light border-ink/20'} border px-3 py-2 flex items-center justify-between">
-                <div class="min-w-0">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-ink/55 block">WhatsApp</span>
-                  ${p.whatsapp 
-                    ? `<span class="text-xs font-bold text-ink truncate block">${escapeHTML(p.whatsapp)}</span>`
-                    : `<button onclick="openEditModal('${p.id}')" class="text-xs font-medium text-ink/45 hover:text-ink italic cursor-pointer">+ Agregar WA</button>`
-                  }
-                </div>
-                ${waLink 
-                  ? `<a href="${waLink}" target="_blank" rel="noopener" title="Abrir chat en WhatsApp" class="w-7 h-7 rounded-full bg-emerald-500 text-white border border-ink flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
-                      <i class="ph-bold ph-whatsapp-logo text-sm"></i>
-                    </a>`
-                  : `<i class="ph-bold ph-whatsapp-logo text-ink/35 text-base shrink-0 ml-1"></i>`
-                }
-              </div>
-            </div>
-
-            <!-- Notas Extra -->
-            <div onclick="openEditModal('${p.id}')" class="rounded-2xl bg-cream-sand/65 border border-ink/15 p-3 mb-4 cursor-pointer hover:bg-cream-sand transition-colors min-h-[62px]">
-              <div class="flex items-center justify-between mb-1">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-ink/60 flex items-center gap-1">
-                  <i class="ph-bold ph-note-pencil"></i> Notas comerciales
-                </span>
-                <span class="text-[10px] font-semibold text-ink/50">Editar</span>
-              </div>
-              <p class="text-xs text-ink/85 font-body leading-relaxed line-clamp-3">
-                ${p.notes ? escapeHTML(p.notes) : '<span class="italic text-ink/45">Sin notas aún. Haz clic para agregar detalles de seguimiento...</span>'}
-              </p>
-            </div>
-          </div>
-
-          <!-- Pie de Tarjeta: Selector Directo de los 7 Estatus -->
-          <div class="pt-3 border-t border-ink/15">
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-ink/55 mb-1">Actualizar Estatus</label>
-            <select 
-              onchange="updateProspectStatus('${p.id}', this.value)"
-              class="neo-input neo-select w-full px-3 py-2 text-xs font-bold cursor-pointer ${isCita ? '!bg-lime-pastel' : ''}"
-            >
-              ${statusOptionsHTML}
-            </select>
-          </div>
-        </article>
-      `;
-    }
-
-    // Funciones de Modales
-    window.openCreateModal = function() {
-      document.getElementById('modal-title').textContent = "Nuevo Prospecto";
-      document.getElementById('modal-icon').className = "ph-bold ph-user-plus text-lg";
-      document.getElementById('field-id').value = "";
-      document.getElementById('field-name').value = "";
-      document.getElementById('field-status').value = "Nuevo registro";
-      document.getElementById('field-phone').value = "";
-      document.getElementById('field-whatsapp').value = "";
-      document.getElementById('field-notes').value = "";
-      document.getElementById('btn-delete-modal').classList.add('hidden');
-      openModal('prospect-modal');
-      setTimeout(() => document.getElementById('field-name').focus(), 100);
-    };
-
-    window.openEditModal = function(id) {
-      const p = prospects.find(item => item.id === id);
-      if (!p) return;
-
-      document.getElementById('modal-title').textContent = "Editar Prospecto";
-      document.getElementById('modal-icon').className = "ph-bold ph-pencil-simple text-lg";
-      document.getElementById('field-id').value = p.id;
-      document.getElementById('field-name').value = p.name || "";
-      document.getElementById('field-status').value = p.status || "Nuevo registro";
-      document.getElementById('field-phone').value = p.phone || "";
-      document.getElementById('field-whatsapp').value = p.whatsapp || "";
-      document.getElementById('field-notes').value = p.notes || "";
-      document.getElementById('btn-delete-modal').classList.remove('hidden');
-      openModal('prospect-modal');
-    };
-
-    window.openGoogleSyncModal = function() {
-      openModal('google-sync-modal');
-    };
-
-    window.openModal = function(id) {
-      const el = document.getElementById(id);
-      el.classList.remove('hidden');
-      el.classList.add('flex');
-    };
-
-    window.closeModal = function(id) {
-      const el = document.getElementById(id);
-      el.classList.add('hidden');
-      el.classList.remove('flex');
-    };
-
-    // Exportación CSV y Copiado para Google Sheets
-    window.exportToCSV = function() {
-      if (prospects.length === 0) {
-        showToast("No hay datos para exportar", true);
-        return;
-      }
-      const headers = ["Nombre / Clínica", "Estatus", "Teléfono Convencional", "WhatsApp", "Notas Extra"];
-      const rows = prospects.map(p => [
-        `"${(p.name || '').replace(/"/g, '""')}"`,
-        `"${(p.status || '').replace(/"/g, '""')}"`,
-        `"${(p.phone || '').replace(/"/g, '""')}"`,
-        `"${(p.whatsapp || '').replace(/"/g, '""')}"`,
-        `"${(p.notes || '').replace(/"/g, '""')}"`
-      ]);
-
-      const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Prospectos_Derma_Puerto_Escondido_${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast("Archivo CSV descargado");
-    };
-
-    window.copyTableForSheets = function() {
-      const headers = ["Nombre / Clínica", "Estatus", "Teléfono Convencional", "WhatsApp", "Notas Extra"];
-      const rows = prospects.map(p => [
-        p.name || '',
-        p.status || '',
-        p.phone || '',
-        p.whatsapp || '',
-        (p.notes || '').replace(/\n/g, ' ')
-      ].join("\t"));
-
-      const tsv = [headers.join("\t"), ...rows].join("\n");
-      const textarea = document.createElement("textarea");
-      textarea.value = tsv;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-      showToast("Copiado. Pégalo directamente en Google Sheets (Ctrl+V)");
-    };
-
-    // Toast visual
-    let toastTimer = null;
-    function showToast(msg, isError = false) {
-      const toast = document.getElementById('toast');
-      const icon = document.getElementById('toast-icon');
-      const text = document.getElementById('toast-message');
-
-      text.textContent = msg;
-      icon.className = isError 
-        ? "ph-fill ph-warning-circle text-terracotta text-lg" 
-        : "ph-fill ph-check-circle text-lime-pastel text-lg";
-
-      toast.classList.remove('hidden');
-      toast.classList.add('flex');
-
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex');
-      }, 3000);
-    }
-
-    // Cerrar modales con tecla Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeModal('prospect-modal');
-        closeModal('delete-modal');
-        closeModal('google-sync-modal');
-      }
+      renderProspects(allProspects);
+      feather.replace();
     });
 
-    // Arrancar conexión con Google Cloud Firestore al cargar
-    window.addEventListener('DOMContentLoaded', initFirebase);
+    // Agregar nuevo prospecto
+    document.getElementById('addProspectForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const whatsapp = document.getElementById('whatsapp').value;
+      const notes = document.getElementById('notes').value;
+
+      db.collection("prospectos_derma_pe").add({
+        name,
+        phone,
+        whatsapp,
+        notes,
+        status: "Nuevo registro",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        document.getElementById('addProspectForm').reset();
+      }).catch((error) => {
+        alert("Error al guardar: " + error.message);
+      });
+    });
+
+    // Renderizar prospectos en pantalla
+    function renderProspects(prospects) {
+      const container = document.getElementById('prospectsList');
+      if (prospects.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #666; padding: 20px;">No hay prospectos registrados todavía.</p>`;
+        return;
+      }
+
+      container.innerHTML = prospects.map(p => `
+        <div class="prospect-card">
+          <div class="prospect-info">
+            <h3>${escapeHtml(p.name)}</h3>
+            <textarea class="contact-input" placeholder="Notas extra..." onchange="updateField('${p.id}', 'notes', this.value)">${escapeHtml(p.notes || '')}</textarea>
+          </div>
+          
+          <div class="contact-fields">
+            <input type="text" class="contact-input" value="${escapeHtml(p.phone || '')}" placeholder="Teléfono" onchange="updateField('${p.id}', 'phone', this.value)">
+            <input type="text" class="contact-input" value="${escapeHtml(p.whatsapp || '')}" placeholder="WhatsApp" onchange="updateField('${p.id}', 'whatsapp', this.value)">
+          </div>
+
+          <div>
+            <select class="status-select ${getStatusClass(p.status)}" onchange="updateStatus('${p.id}', this.value)">
+              ${statusOptions.map(opt => `<option value="${opt}" ${p.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="actions-col">
+            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="whatsapp-btn" title="Abrir WhatsApp"><i data-feather="message-circle" style="width:18px;height:18px"></i></a>` : ''}
+            <button class="icon-btn" onclick="deleteProspect('${p.id}')" title="Eliminar registro"><i data-feather="trash-2" style="width:18px;height:18px"></i></button>
+          </div>
+        </div>
+      `).join('');
+      feather.replace();
+    }
+
+    // Actualizar campo individual (teléfono, whatsapp, notas)
+    function updateField(id, field, value) {
+      db.collection("prospectos_derma_pe").doc(id).update({
+        [field]: value
+      });
+    }
+
+    // Actualizar estatus
+    function updateStatus(id, newStatus) {
+      db.collection("prospectos_derma_pe").doc(id).update({
+        status: newStatus
+      });
+    }
+
+    // Eliminar registro
+    function deleteProspect(id) {
+      if (confirm("¿Estás seguro de eliminar este prospecto?")) {
+        db.collection("prospectos_derma_pe").doc(id).delete();
+      }
+    }
+
+    // Filtrar prospectos en tiempo real
+    function filterProspects() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+
+      const filtered = allProspects.filter(p => {
+        const matchesSearch = (p.name && p.name.toLowerCase().includes(search)) || (p.notes && p.notes.toLowerCase().includes(search));
+        const matchesStatus = statusFilter === 'todos' || p.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+
+      renderProspects(filtered);
+    }
+
+    // Asignar clases de color según estatus
+    function getStatusClass(status) {
+      switch(status) {
+        case 'Nuevo registro': return 'status-nuevo';
+        case 'Ya se tienen todos los datos de contacto': return 'status-datos';
+        case 'Ya se hizo auditoría o propuesta': return 'status-propuesta-hecha';
+        case 'Ya se envió auditoría o propuesta': return 'status-propuesta-enviada';
+        case 'Ya tuvimos primer contestación, en espera': return 'status-espera';
+        case 'Ya se hizo cita': return 'status-cita';
+        case 'No desea los servicios': return 'status-no';
+        default: return '';
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Exportar a CSV (compatible directo con Google Sheets)
+    function exportToCSV() {
+      let csv = 'Nombre,Telefono,WhatsApp,Estatus,Notas\n';
+      allProgress = allProspects || [];
+      allProspects.forEach(p => {
+        csv += `"${p.name || ''}","${p.phone || ''}","${p.whatsapp || ''}","${p.status || ''}","${(p.notes || '').replace(/\n/g, ' ')}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "prospectos_derma_puerto_escondido.csv";
+      link.click();
+    }
+
+    feather.replace();
   </script>
 </body>
 </html>
