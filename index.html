@@ -45,9 +45,7 @@
     .brand { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 1.35rem; letter-spacing: -0.5px; }
     .brand-badge { background: var(--accent-green); padding: 8px 16px; border: 1.5px solid var(--border-color); border-radius: 50px; font-size: 0.85rem; font-weight: 700; box-shadow: 2px 2px 0px var(--border-color); }
 
-    /* ==========================================
-       NUEVA ZONA SUPERIOR: CONTADOR + ÍNDICE RAPIDO
-       ========================================== */
+    /* Zona Superior: Contador + Índice Rápido */
     .overview-strip {
       display: grid;
       grid-template-columns: 230px 1fr;
@@ -165,15 +163,15 @@
     .panel h2 { font-size: 1.25rem; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; font-weight: 700; }
 
     /* Formulario de alta rápida */
-    .form-group { margin-bottom: 18px; }
+    .form-group { margin-bottom: 15px; }
     label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
     input, select, textarea {
       width: 100%;
-      padding: 12px 16px;
+      padding: 11px 14px;
       background: var(--white);
       border: 1.5px solid var(--border-color);
       border-radius: 12px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-main);
       outline: none;
       transition: all 0.2s;
@@ -199,7 +197,7 @@
     .btn:hover { background: var(--accent-orange); color: var(--text-main); transform: translateY(-1px); }
     .btn:active { transform: translateY(0); box-shadow: 1px 1px 0px var(--border-color); }
     
-    .btn-export { background: var(--accent-green); color: var(--text-main); margin-top: 16px; }
+    .btn-export { background: var(--accent-green); color: var(--text-main); margin-top: 14px; }
     .btn-export:hover { background: #dff065; }
 
     /* Filtros y Buscador */
@@ -213,8 +211,8 @@
     }
     .search-box { flex: 1; min-width: 240px; }
 
-    /* Lista de Prospectos (Estilo Tarjeta Amplia tipo Player/Dashboard) */
-    .prospects-list { display: flex; flex-direction: column; gap: 24px; max-height: 78vh; overflow-y: auto; padding-right: 6px; scroll-behavior: smooth; }
+    /* Lista de Prospectos */
+    .prospects-list { display: flex; flex-direction: column; gap: 24px; max-height: 82vh; overflow-y: auto; padding-right: 6px; scroll-behavior: smooth; }
     
     .prospect-card {
       background: var(--white);
@@ -223,7 +221,7 @@
       padding: 24px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 18px;
       box-shadow: 4px 4px 0px var(--border-color);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s ease;
     }
@@ -251,9 +249,9 @@
     }
     .prospect-name-input:focus { background: var(--card-bg); border-radius: 8px; padding: 4px 8px; }
 
-    /* Campos de Contacto y Estatus */
-    .card-block { display: flex; flex-direction: column; gap: 8px; }
-    .card-block label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #555; font-weight: 700; }
+    /* Campos de Contacto, Redes y Estatus */
+    .card-block { display: flex; flex-direction: column; gap: 6px; }
+    .card-block label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.5px; color: #555; font-weight: 700; display: flex; align-items: center; gap: 5px; }
     
     .contact-input { font-size: 0.9rem; padding: 10px 14px; border-radius: 10px; background: var(--card-bg); border: 1.5px solid var(--border-color); }
     .contact-input:focus { background: var(--white); }
@@ -280,24 +278,27 @@
     .notes-textarea:focus { background: var(--white); box-shadow: 2px 2px 0px var(--border-color); }
 
     /* Botones de Acción inferiores */
-    .card-actions-bar { grid-column: span 2; display: flex; justify-content: flex-end; gap: 10px; border-top: 1.5px solid #eee; padding-top: 14px; align-items: center; }
-    @media (max-width: 768px) { .card-actions-bar { grid-column: span 1; flex-wrap: wrap; } }
+    .card-actions-bar { grid-column: span 2; display: flex; justify-content: flex-end; gap: 10px; border-top: 1.5px solid #eee; padding-top: 14px; align-items: center; flex-wrap: wrap; }
+    @media (max-width: 768px) { .card-actions-bar { grid-column: span 1; } }
 
     .icon-btn {
       background: var(--card-alt);
       border: 1.5px solid var(--border-color);
-      padding: 10px 16px;
+      padding: 9px 14px;
       border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
+      text-decoration: none;
+      color: var(--text-main);
       box-shadow: 2px 2px 0px var(--border-color);
       transition: all 0.1s;
     }
-    .icon-btn:hover { background: #ffc4b4; transform: translateY(-1px); }
+    .icon-btn:hover { background: var(--accent-green); transform: translateY(-1px); }
+    .icon-btn.delete-btn:hover { background: #ffc4b4; }
     
     .whatsapp-btn {
       background: #25D366;
@@ -306,17 +307,17 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 16px;
+      padding: 9px 14px;
       border-radius: 10px;
       border: 1.5px solid var(--border-color);
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       box-shadow: 2px 2px 0px var(--border-color);
       transition: all 0.1s;
     }
     .whatsapp-btn:hover { background: #20ba5a; transform: translateY(-1px); }
 
-    /* Paleta de colores distintivos por Estatus (Aplica a Selects y Pills superiores) */
+    /* Paleta de colores distintivos por Estatus */
     .status-nuevo { background-color: #E2E8F0; }
     .status-datos { background-color: #FEF08A; }
     .status-propuesta-hecha { background-color: #FED7AA; }
@@ -337,7 +338,7 @@
       <div class="brand-badge">Agencia Reinventa</div>
     </header>
 
-    <!-- NUEVA ZONA SUPERIOR: Contador Total + Índice de Prospectos con Código de Color -->
+    <!-- ZONA SUPERIOR: Contador Total + Índice de Prospectos con Código de Color -->
     <section class="overview-strip">
       <div class="kpi-card">
         <span class="kpi-label"><i data-feather="database" style="width:14px;height:14px;"></i> Registros Totales</span>
@@ -373,6 +374,14 @@
             <input type="text" id="whatsapp" placeholder="+52 954 123 4567">
           </div>
           <div class="form-group">
+            <label for="instagram">Instagram</label>
+            <input type="text" id="instagram" placeholder="@clinicaderma o enlace">
+          </div>
+          <div class="form-group">
+            <label for="facebook">Facebook</label>
+            <input type="text" id="facebook" placeholder="fb.com/clinicaderma o enlace">
+          </div>
+          <div class="form-group">
             <label for="notes">Notas Iniciales</label>
             <textarea id="notes" rows="3" placeholder="Interés en pautas de Meta, diseño y redes sociales..."></textarea>
           </div>
@@ -389,7 +398,7 @@
       <div class="panel">
         <div class="filters-bar">
           <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar por nombre o nota..." oninput="filterProspects()">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, red social o nota..." oninput="filterProspects()">
           </div>
           <select id="statusFilter" onchange="filterProspects()" style="max-width: 240px;">
             <option value="todos">Todos los estatus</option>
@@ -480,7 +489,6 @@
 
     // Desplazarse al registro seleccionado y resaltarlo
     function jumpToProspect(id) {
-      // Si hay un filtro activo que oculta la tarjeta, lo limpiamos para garantizar que aparezca
       const searchInput = document.getElementById('searchInput');
       const statusFilter = document.getElementById('statusFilter');
       
@@ -502,18 +510,22 @@
       }, 60);
     }
 
-    // Agregar nuevo prospecto
+    // Agregar nuevo prospecto con Instagram y Facebook incluidos
     document.getElementById('addProspectForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
       const whatsapp = document.getElementById('whatsapp').value;
+      const instagram = document.getElementById('instagram').value;
+      const facebook = document.getElementById('facebook').value;
       const notes = document.getElementById('notes').value;
 
       db.collection("prospectos_derma_pe").add({
         name,
         phone,
         whatsapp,
+        instagram,
+        facebook,
         notes,
         status: "Nuevo registro",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -523,6 +535,25 @@
         alert("Error al guardar: " + error.message);
       });
     });
+
+    // Helper para formatear URLs externas de redes sociales
+    function formatSocialUrl(val, network) {
+      if (!val) return '';
+      const trimmed = val.trim();
+      if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+        return trimmed;
+      }
+      const cleanHandle = trimmed.replace(/^@/, '');
+      if (network === 'instagram') {
+        return `https://instagram.com/${cleanHandle}`;
+      }
+      if (network === 'facebook') {
+        return trimmed.includes('facebook.com') || trimmed.includes('fb.com')
+          ? `https://${trimmed}`
+          : `https://facebook.com/${cleanHandle}`;
+      }
+      return trimmed;
+    }
 
     // Renderizar prospectos con diseño tipo Card de Dashboard Amplio
     function renderProspects(prospects) {
@@ -541,16 +572,27 @@
           
           <!-- Bloque 1: Datos de Contacto -->
           <div class="card-block">
-            <label>Teléfono Convencional</label>
+            <label><i data-feather="phone" style="width:12px;height:12px;"></i> Teléfono Convencional</label>
             <input type="text" class="contact-input" value="${escapeHtml(p.phone || '')}" placeholder="954 123 4567" onchange="updateField('${p.id}', 'phone', this.value)">
           </div>
 
           <div class="card-block">
-            <label>WhatsApp</label>
+            <label><i data-feather="message-circle" style="width:12px;height:12px;"></i> WhatsApp</label>
             <input type="text" class="contact-input" value="${escapeHtml(p.whatsapp || '')}" placeholder="+52 954 123 4567" onchange="updateField('${p.id}', 'whatsapp', this.value)">
           </div>
 
-          <!-- Bloque 2: Estatus comercial -->
+          <!-- Bloque 2: Redes Sociales (Instagram y Facebook) -->
+          <div class="card-block">
+            <label><i data-feather="instagram" style="width:12px;height:12px;"></i> Instagram</label>
+            <input type="text" class="contact-input" value="${escapeHtml(p.instagram || '')}" placeholder="@usuario o enlace" onchange="updateField('${p.id}', 'instagram', this.value)">
+          </div>
+
+          <div class="card-block">
+            <label><i data-feather="facebook" style="width:12px;height:12px;"></i> Facebook</label>
+            <input type="text" class="contact-input" value="${escapeHtml(p.facebook || '')}" placeholder="Página o enlace" onchange="updateField('${p.id}', 'facebook', this.value)">
+          </div>
+
+          <!-- Bloque 3: Estatus comercial -->
           <div class="card-block" style="grid-column: span 2;">
             <label>Estatus Actual del Proceso</label>
             <select class="status-select ${getStatusClass(p.status)}" onchange="updateStatus('${p.id}', this.value)">
@@ -558,16 +600,18 @@
             </select>
           </div>
 
-          <!-- Bloque 3: Notas amplias y cómodas -->
+          <!-- Bloque 4: Notas amplias y cómodas -->
           <div class="card-block-full">
             <label>Bitácora de Notas y Seguimiento</label>
             <textarea class="notes-textarea" placeholder="Escribe aquí notas detalladas, acuerdos, fechas de llamadas o pendientes..." onchange="updateField('${p.id}', 'notes', this.value)">${escapeHtml(p.notes || '')}</textarea>
           </div>
 
-          <!-- Barra de Acciones inferior -->
+          <!-- Barra de Acciones inferior (Incluye accesos directos a redes si están capturadas) -->
           <div class="card-actions-bar">
-            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="whatsapp-btn"><i data-feather="message-circle" style="width:16px;height:16px"></i> Abrir WhatsApp</a>` : ''}
-            <button class="icon-btn" onclick="deleteProspect('${p.id}')" style="color: #b91c1c;"><i data-feather="trash-2" style="width:16px;height:16px"></i> Eliminar</button>
+            ${p.instagram ? `<a href="${escapeHtml(formatSocialUrl(p.instagram, 'instagram'))}" target="_blank" class="icon-btn"><i data-feather="instagram" style="width:15px;height:15px"></i> Ver IG</a>` : ''}
+            ${p.facebook ? `<a href="${escapeHtml(formatSocialUrl(p.facebook, 'facebook'))}" target="_blank" class="icon-btn"><i data-feather="facebook" style="width:15px;height:15px"></i> Ver FB</a>` : ''}
+            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="whatsapp-btn"><i data-feather="message-circle" style="width:15px;height:15px"></i> WhatsApp</a>` : ''}
+            <button class="icon-btn delete-btn" onclick="deleteProspect('${p.id}')" style="color: #b91c1c;"><i data-feather="trash-2" style="width:15px;height:15px"></i> Eliminar</button>
           </div>
         </div>
       `).join('');
@@ -595,13 +639,17 @@
       }
     }
 
-    // Filtrar prospectos en tiempo real
+    // Filtrar prospectos en tiempo real (incluye búsqueda por Instagram y Facebook)
     function filterProspects() {
       const search = document.getElementById('searchInput').value.toLowerCase();
       const statusFilter = document.getElementById('statusFilter').value;
 
       const filtered = allProspects.filter(p => {
-        const matchesSearch = (p.name && p.name.toLowerCase().includes(search)) || (p.notes && p.notes.toLowerCase().includes(search));
+        const matchesSearch =
+          (p.name && p.name.toLowerCase().includes(search)) ||
+          (p.notes && p.notes.toLowerCase().includes(search)) ||
+          (p.instagram && p.instagram.toLowerCase().includes(search)) ||
+          (p.facebook && p.facebook.toLowerCase().includes(search));
         const matchesStatus = statusFilter === 'todos' || p.status === statusFilter;
         return matchesSearch && matchesStatus;
       });
@@ -628,11 +676,11 @@
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Exportar a CSV (compatible directo con Google Sheets)
+    // Exportar a CSV (compatible directo con Google Sheets, incluye IG y FB)
     function exportToCSV() {
-      let csv = 'Nombre,Telefono,WhatsApp,Estatus,Notas\n';
+      let csv = 'Nombre,Telefono,WhatsApp,Instagram,Facebook,Estatus,Notas\n';
       allProspects.forEach(p => {
-        csv += `"${p.name || ''}","${p.phone || ''}","${p.whatsapp || ''}","${p.status || ''}","${(p.notes || '').replace(/\n/g, ' ')}"\n`;
+        csv += `"${p.name || ''}","${p.phone || ''}","${p.whatsapp || ''}","${p.instagram || ''}","${p.facebook || ''}","${p.status || ''}","${(p.notes || '').replace(/\n/g, ' ')}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
